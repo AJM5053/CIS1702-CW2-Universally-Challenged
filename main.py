@@ -112,7 +112,7 @@ def player_options(current_area,game_map_dict,area_directions): #Displays the pl
     print()
     print("What would you like to do?")
     print()
-    print("Go...") #Command is "go 'cardinal direction"
+    print("Go...") #Command is "go 'cardinal direction'"
     print(f"North - {area_directions["north_area"]}")
     print(f"East - {area_directions["east_area"]}")
     print(f"South - {area_directions["south_area"]}")
@@ -225,6 +225,7 @@ def pickup_item(seperated,current_area):
         return()
 
 def action(seperated,game_map_dict,current_area,player_dict,exit):
+    #Change this as this practically removes most of the purpose of validating the input
     if seperated[0]=="quit":
         exit=quit(current_area,player_dict)
     elif seperated[0]=="view" and seperated[1]=="inventory":
@@ -233,8 +234,11 @@ def action(seperated,game_map_dict,current_area,player_dict,exit):
         current_area,exit=go_area(seperated,game_map_dict,current_area)
     elif seperated[0]=="drop" and seperated[1]=="item":
         drop_item(current_area)
-    else:
+    elif seperated[0]=="pickup" and seperated[1]=="item":
         pickup_item(seperated,current_area)
+    else:
+        print("Invalid command")
+        print()
     return(exit,current_area)
 
 def area_decision(exit,choice,player_dict,current_area,verb_commands,noun_commands,game_map_dict):
