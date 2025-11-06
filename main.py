@@ -94,10 +94,10 @@ def starting_area(game_map_dict,player_dict): #Sets what area the player first s
     print("Start from the start or where you last left off?")
     print("1 - From the start")
     print("2 - From where you last left off")
-    start_choice=3
-    while start_choice<1 or start_choice>2: #Keeps asking the user for an input until it is valid
-        start_choice=int(input())
-    if start_choice==1:
+    start_choice="0"
+    while ord(start_choice)<49 or ord(start_choice)>50: #Keeps asking the user for an input until it is valid. The Ord value gets the ascii value. 49 in ascii is "1" and 50 in ascii is "2".
+        start_choice=input()
+    if start_choice=="1":
         current_area=game_map_dict["game_map"]["area_properties"]["start_area"] # Predefined start areaby the json file
     else:
         current_area=player_dict["player"]["properties"]["current_area"] #Last location the user was at after quitting the game (must use the quit feature)
@@ -112,7 +112,7 @@ def player_options(current_area,game_map_dict,area_directions): #Displays the pl
     print()
     print("What would you like to do?")
     print()
-    print("Go...")
+    print("Go...") #Command is "go 'cardinal direction"
     print(f"North - {area_directions["north_area"]}")
     print(f"East - {area_directions["east_area"]}")
     print(f"South - {area_directions["south_area"]}")
@@ -120,9 +120,9 @@ def player_options(current_area,game_map_dict,area_directions): #Displays the pl
     print()
     print("Quit")
     print("View Inventory")
-    print("Drop...")
+    print("Drop...") #Command is "drop item"
     view_inventory()
-    print("Pickup...")
+    print("Pickup...") #Command is "pickup item"
     view_dropped_items(current_area)
 
     choice=input().lower()
@@ -183,7 +183,7 @@ def drop_item(current_area):
     if inventory_dict["inventory"][0]!="placeholder": #Checking that the player has items in their inventory
         item_to_drop=input()
         if item_to_drop in inventory_dict["inventory"]: #Checks if the given item to drop is in the players inventory
-            inventory_dict["inventory"].remove(item_to_drop) #Removing item from inventory
+            inventory_dict["inventory"].remove(item_to_drop) #Removes the earliest of that item in the list from the players inventory
             update_inventory(inventory_dict)
             dropped_items_dict=read_dropped_items()
             dropped_items_dict["dropped_items"][current_area].insert(0,item_to_drop) #Add the dropped item to the dropped items file for the current area the player is in
@@ -234,7 +234,7 @@ def action(seperated,game_map_dict,current_area,player_dict,exit):
     elif seperated[0]=="drop" and seperated[1]=="item":
         drop_item(current_area)
     else:
-        pickup_item(seperated)
+        pickup_item(seperated,current_area)
     return(exit,current_area)
 
 def area_decision(exit,choice,player_dict,current_area,verb_commands,noun_commands,game_map_dict):
