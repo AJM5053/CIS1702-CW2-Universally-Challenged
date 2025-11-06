@@ -1,0 +1,61 @@
+{"game_map":{
+    "area_connections":{
+        "outside":{
+            "north":"entrance",
+            "east":"outside",
+            "south":"outside",
+            "west":"outside",
+            "accessible":"True"
+        },
+        "entrance":{
+            "north":"kitchen",
+            "east":"stairs",
+            "south":"outside",
+            "west":"living_area",
+            "accessible":"True"
+        },
+        "kitchen":{
+            "north":"wall",
+            "east":"living_area",
+            "south":"entrance",
+            "west":"wall",
+            "accessible":"True"
+        },
+        "living_area":{
+            "north":"kitchen",
+            "east":"entrance",
+            "south":"wall",
+            "west":"wall",
+            "accessible":"True"
+        },
+        "stairs":{
+            "north":"wall",
+            "east":"wall",
+            "south":"wall",
+            "west":"entrance",
+            "accessible":"True"
+        },
+        "wall":{
+            "accessible":"False"
+        }
+    },
+    "area_properties":{
+        "start_area":"outside",
+        "end_area":"stairs"
+    },
+    "area_descriptions":{
+        "outside":"It is rather cold",
+        "entrance":"It is a cramped corridor leading to the rest of the house",
+        "kitchen":"There are kitchen appliances here",
+        "living_area":"There is a sofa and tv",
+        "stairs":"You are now higher than you were previously"
+    },
+    "dropped_items":{
+        "outside":["placeholder"],
+        "entrance":["sword","placeholder"],
+        "kitchen":["dagger","placeholder"],
+        "living_area":["placeholder"],
+        "stairs":["placeholder"]
+    }
+}
+}

@@ -1,0 +1,9 @@
+{"items":{
+    "id_1":{
+        "name":"dagger", "damage":1
+    },
+    "id_2":{
+        "name":"sword", "damage":2
+    }
+}
+}
