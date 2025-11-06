@@ -192,8 +192,6 @@ def drop_item(current_area):
         else:
             print("You do not have this item in your inventory")
             print()
-    else:
-        return()
 
 def view_dropped_items(current_area):
     dropped_items_dict=read_dropped_items()
@@ -221,8 +219,6 @@ def pickup_item(seperated,current_area):
         else:
             print("Item is not dropped in this area")
             print()
-    else:
-        return()
 
 def action(seperated,game_map_dict,current_area,player_dict,exit):
     #Change this as this practically removes most of the purpose of validating the input
