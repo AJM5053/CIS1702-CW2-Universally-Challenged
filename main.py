@@ -181,8 +181,8 @@ def drop_item(current_area):
     view_inventory()
     inventory_dict=read_inventory()
     if inventory_dict["inventory"][0]!="placeholder": #Checking that the player has items in their inventory
-        item_to_drop=input()
-        if item_to_drop in inventory_dict["inventory"]: #Checks if the given item to drop is in the players inventory
+        item_to_drop=input().lower()
+        if item_to_drop in inventory_dict["inventory"] and item_to_drop!="placeholder": #Checks if the given item to drop is in the players inventory
             inventory_dict["inventory"].remove(item_to_drop) #Removes the earliest of that item in the list from the players inventory
             update_inventory(inventory_dict)
             dropped_items_dict=read_dropped_items()
@@ -210,8 +210,8 @@ def pickup_item(seperated,current_area):
     view_dropped_items(current_area)
     dropped_items_dict=read_dropped_items()
     if dropped_items_dict["dropped_items"][current_area][0]!="placeholder": #Checking that the current room has any items dropped in it
-        item_to_pickup=input()
-        if item_to_pickup in dropped_items_dict["dropped_items"][current_area]: #Checking if the given item to pickup is dropped in the current area
+        item_to_pickup=input().lower()
+        if item_to_pickup in dropped_items_dict["dropped_items"][current_area] and item_to_pickup!="placeholder": #Checking if the given item to pickup is dropped in the current area
             dropped_items_dict["dropped_items"][current_area].remove(item_to_pickup) #Removing the item from the items dropped in the area
             update_dropped_items(dropped_items_dict)
             inventory_dict=read_inventory()
