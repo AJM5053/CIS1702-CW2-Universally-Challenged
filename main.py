@@ -105,18 +105,17 @@ def starting_area(game_map_dict,player_dict): #Sets what area the player first s
 
 def player_options(current_area,game_map_dict,area_directions): #Displays the player what their options are and asks for an input
     dropped_items_dict=read_dropped_items()
-    current_area=current_area.replace(" ", "_")
     #Player options
-    print(f"Current area: {current_area}")
+    print(f"Current area: {current_area.replace("_", " ")}")
     print(game_map_dict["game_map"]["area_descriptions"][current_area])
     print()
     print("What would you like to do?")
     print()
     print("Go...") #Command is "go 'cardinal direction'"
-    print(f"North - {area_directions["north_area"]}")
-    print(f"East - {area_directions["east_area"]}")
-    print(f"South - {area_directions["south_area"]}")
-    print(f"West - {area_directions["west_area"]}")
+    print(f"North - {area_directions["north_area"].replace("_", " ")}")
+    print(f"East - {area_directions["east_area"].replace("_", " ")}")
+    print(f"South - {area_directions["south_area"].replace("_", " ")}")
+    print(f"West - {area_directions["west_area"].replace("_", " ")}")
     print()
     print("Quit")
     print("View Inventory")
@@ -180,11 +179,11 @@ def view_inventory():
         print()
     else:
         for item in inventory_dict["inventory"][:-1]:
-            print(item)
+            print(item.replace("_", " "))
         print()
 
 def go_area(seperated,game_map_dict,current_area):
-    print(f"You have moved {seperated[1]} into area: {game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]}")
+    print(f"You have moved {seperated[1]} into area: {game_map_dict["game_map"]["area_connections"][current_area][seperated[1]].replace("_", " ")}")
     current_area=game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]
     if current_area==game_map_dict["game_map"]["area_properties"]["end_area"]:
         print("You have won the game and found the correct area!")
@@ -198,14 +197,14 @@ def drop_item(current_area):
     view_inventory()
     inventory_dict=read_inventory()
     if inventory_dict["inventory"][0]!="placeholder": #Checking that the player has items in their inventory
-        item_to_drop=input().lower()
+        item_to_drop=input().lower().replace(" ", "_")
         if item_to_drop in inventory_dict["inventory"] and item_to_drop!="placeholder": #Checks if the given item to drop is in the players inventory
             inventory_dict["inventory"].remove(item_to_drop) #Removes the earliest of that item in the list from the players inventory
             update_inventory(inventory_dict)
             dropped_items_dict=read_dropped_items()
             dropped_items_dict["dropped_items"][current_area].insert(0,item_to_drop) #Add the dropped item to the dropped items file for the current area the player is in
             update_dropped_items(dropped_items_dict)
-            print(f"{item_to_drop} dropped in area: {current_area}...")
+            print(f"{item_to_drop.replace("_", " ")} dropped in area: {current_area.replace("_", " ")}...")
         else:
             print("You do not have this item in your inventory")
             print()
@@ -217,7 +216,7 @@ def view_dropped_items(current_area):
         print()
     else:
         for item in dropped_items_dict["dropped_items"][current_area][:-1]:
-            print(item)
+            print(item.replace("_", " "))
         print()
 
 def pickup_item(seperated,current_area):
@@ -225,14 +224,14 @@ def pickup_item(seperated,current_area):
     view_dropped_items(current_area)
     dropped_items_dict=read_dropped_items()
     if dropped_items_dict["dropped_items"][current_area][0]!="placeholder": #Checking that the current room has any items dropped in it
-        item_to_pickup=input().lower()
+        item_to_pickup=input().lower().replace(" ", "_")
         if item_to_pickup in dropped_items_dict["dropped_items"][current_area] and item_to_pickup!="placeholder": #Checking if the given item to pickup is dropped in the current area
             dropped_items_dict["dropped_items"][current_area].remove(item_to_pickup) #Removing the item from the items dropped in the area
             update_dropped_items(dropped_items_dict)
             inventory_dict=read_inventory()
             inventory_dict["inventory"].insert(0,item_to_pickup) #Adding the picked up item to the players inventory
             update_inventory(inventory_dict)
-            print(f"{item_to_pickup} picked up and added to inventory...")
+            print(f"{item_to_pickup.replace("_", " ")} picked up and added to inventory...")
         else:
             print("Item is not dropped in this area")
             print()
