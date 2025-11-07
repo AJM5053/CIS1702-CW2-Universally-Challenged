@@ -12,6 +12,9 @@ def test_variables(current_area,player_dict,area_directions):
     print()
     print(f"Player json - {player_dict}")
 
+#Saving the game -
+#Either use a "local" dictionary for each file across the whole code and only write to the file while quitting
+
 def update_dropped_items(dropped_items_dict):
     with open("dropped_items.json", 'w') as write_file:
         json.dump(dropped_items_dict, write_file)
@@ -161,14 +164,24 @@ def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_ma
         else:
             return(False,seperated)
 
-def quit(current_area,player_dict): #Saves the area the player was in when they quit for the next time they play
-    exit=True
-    print("Saving current properties...")
-    player_dict["player"]["properties"]["current_area"]=current_area
-    update_player(player_dict)
-    print("Saved")
-    print("Exiting...")
-    print("Exited")
+def quit(current_area,player_dict): #Saves the area the player was in when they quit for the next time they play. This will be expanded upon to add more stuff saved and the ability to save to a seperate file
+    exit=False
+    while exit!=True:
+        exit=True
+        save=input("Would you like to save your progress? (Y/N)")
+        if save=="Y":
+            print("Saving current properties...")
+            player_dict["player"]["properties"]["current_area"]=current_area
+            update_player(player_dict)
+            print("Saved")
+            print("Exiting...")
+            print("Exited")
+        elif save=="N":
+            print("Exiting without saving...")
+            print("Exited")
+        else:
+            print("Please input a valid answer")
+            exit=False
     return(exit)
 
 def view_inventory():
