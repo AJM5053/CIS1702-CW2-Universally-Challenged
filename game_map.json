@@ -33,7 +33,7 @@
             "east":"wall",
             "south":"wall",
             "west":"entrance",
-            "accessible":"True"
+            "accessible":"False"
         },
         "wall":{
             "accessible":"False"
@@ -49,13 +49,6 @@
         "kitchen":"There are kitchen appliances here",
         "living_area":"There is a sofa and tv",
         "stairs":"You are now higher than you were previously"
-    },
-    "dropped_items":{
-        "outside":["placeholder"],
-        "entrance":["sword","placeholder"],
-        "kitchen":["dagger","placeholder"],
-        "living_area":["placeholder"],
-        "stairs":["placeholder"]
     }
 }
 }

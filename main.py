@@ -105,7 +105,7 @@ def starting_area(game_map_dict,player_dict): #Sets what area the player first s
 
 def player_options(current_area,game_map_dict,area_directions): #Displays the player what their options are and asks for an input
     dropped_items_dict=read_dropped_items()
-    #current_area=current_area.replace(" ", "_")
+    current_area=current_area.replace(" ", "_")
     #Player options
     print(f"Current area: {current_area}")
     print(game_map_dict["game_map"]["area_descriptions"][current_area])
@@ -129,7 +129,16 @@ def player_options(current_area,game_map_dict,area_directions): #Displays the pl
     print()
     return(choice)
 
+def check_key(game_map_dict,current_area,seperated): #Checks if player has correct key
+    inventory_dict=read_inventory()
+    key=game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]+"_"+"key"
+    if key in inventory_dict["inventory"]:
+        return(True)
+    else:
+        return(False)
+
 def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_map_dict): #Checks if the input is valid from 2 lists for each half for the input.
+    #Too many ifs
     if choice=="": #If the inputs inputs nothing
         return(False,"")
     else:
@@ -139,7 +148,15 @@ def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_ma
         elif seperated[0] in verb_commands and seperated[1] in noun_commands: #Checks both are valid
             if seperated[0]=="go":
                 if game_map_dict["game_map"]["area_connections"][game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]]["accessible"]=="False": #Checks whether the area chosen to move to is accessible
-                    print("Inaccessible")
+                    if game_map_dict["game_map"]["area_connections"][game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]]!="wall":
+                        if check_key(game_map_dict,current_area,seperated)==True:
+                            print("You use your key to open the door")
+                            return(True,seperated)
+                        else:
+                            print("Locked")
+                            return(False,seperated)
+                    else:
+                        print("Inaccessible")
                     return(False,seperated)
             return(True,seperated)
         else:
