@@ -12,8 +12,18 @@ def test_variables(current_area,player_dict,area_directions):
     print()
     print(f"Player json - {player_dict}")
 
+#---Notes---#
 #Saving the game -
 #Either use a "local" dictionary for each file across the whole code and only write to the file while quitting
+#At the start ask if they would like to load from the "saved_game" file or not. Maybe only update the saved game file or have a default equivalent duplicate for each json file but that would be nearly doubling the number of files.
+
+#Too much .replaces
+
+#If you use a key on a locked door it should become "accessible".
+#Some variable names share a name with a python instruction which is bad practice.
+#Over use of instructions like .lower or .replace and similar
+#Each time a command that doesnt require a reset of options (view inventory, help, or if an invalid command is input) it shouldn't refresh the options ui
+#Make it so that rather than the command for drop or pickup be drop item and pickup item it should instead be drop 'item_name' and pickup 'item_name'
 
 def update_dropped_items(dropped_items_dict):
     with open("dropped_items.json", 'w') as write_file:
@@ -75,8 +85,8 @@ def __init__():
     game_map_dict=read_game_map()
     player_dict=read_player()
     #List of Valid commands
-    verb_commands=["go","view","drop","pickup","quit"]
-    noun_commands=["north","east","south","west","game","inventory","item"]
+    verb_commands=["go","drop","pickup","quit","help"]
+    noun_commands=["north","east","south","west"]
     current_area=starting_area(game_map_dict,player_dict)
     area_directions={
         "north_area":game_map_dict["game_map"]["area_connections"][current_area]["north"],
@@ -107,7 +117,6 @@ def starting_area(game_map_dict,player_dict): #Sets what area the player first s
     return(current_area)
 
 def player_options(current_area,game_map_dict,area_directions): #Displays the player what their options are and asks for an input
-    dropped_items_dict=read_dropped_items()
     #Player options
     print(f"Current area: {current_area.replace("_", " ")}")
     print(game_map_dict["game_map"]["area_descriptions"][current_area])
@@ -120,16 +129,12 @@ def player_options(current_area,game_map_dict,area_directions): #Displays the pl
     print(f"South - {area_directions["south_area"].replace("_", " ")}")
     print(f"West - {area_directions["west_area"].replace("_", " ")}")
     print()
-    print("Quit")
-    print("View Inventory")
-    print("Drop...") #Command is "drop item"
+    print("Drop...") #Command is "drop 'item_name'"
     view_inventory()
-    print("Pickup...") #Command is "pickup item"
+    print("Pickup...") #Command is "pickup 'item_name'"
     view_dropped_items(current_area)
-
-    choice=input().lower()
-    print()
-    return(choice)
+    print("Help")
+    print("Quit")
 
 def check_key(game_map_dict,current_area,seperated): #Checks if player has correct key
     inventory_dict=read_inventory()
@@ -144,11 +149,11 @@ def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_ma
     if choice=="": #If the inputs inputs nothing
         return(False,"")
     else:
-        seperated=choice.split() #Splits the input into the 2 components of "verb command" and "noun command" such as "go" and "north"
-        if seperated[0] in verb_commands and len(seperated)==1: #If the command is only one word and valid
-            return(True,seperated)
-        elif seperated[0] in verb_commands and seperated[1] in noun_commands: #Checks both are valid
-            if seperated[0]=="go":
+        seperated=choice.split()
+        if seperated[0] in verb_commands:
+            if seperated[0]=="help" or seperated=="quit":
+                return(True,seperated)
+            elif seperated[0]=="go" and seperated[1] in noun_commands:
                 if game_map_dict["game_map"]["area_connections"][game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]]["accessible"]=="False": #Checks whether the area chosen to move to is accessible
                     if game_map_dict["game_map"]["area_connections"][game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]]!="wall":
                         if check_key(game_map_dict,current_area,seperated)==True:
@@ -160,7 +165,15 @@ def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_ma
                     else:
                         print("Inaccessible")
                     return(False,seperated)
-            return(True,seperated)
+            elif (seperated[0]=="pickup" or seperated[0]=="drop") and len(seperated)>1:
+                #very scuffed
+                verb=seperated[1]
+                for i in range(2,len(seperated)):
+                    verb+="_"+seperated[i]
+                seperated[1]=verb
+                return(True,seperated)
+            else:
+                return(False,seperated)
         else:
             return(False,seperated)
 
@@ -185,7 +198,6 @@ def quit(current_area,player_dict): #Saves the area the player was in when they 
     return(exit)
 
 def view_inventory():
-    print("Inventory:")
     inventory_dict=read_inventory()
     if inventory_dict["inventory"][0]=="placeholder":
         print("You inventory is empty")
@@ -205,12 +217,10 @@ def go_area(seperated,game_map_dict,current_area):
         exit=False
     return(current_area,exit)
 
-def drop_item(current_area):
-    print("Which item would you like to drop?")
-    view_inventory()
+def drop_item(seperated,current_area):
     inventory_dict=read_inventory()
     if inventory_dict["inventory"][0]!="placeholder": #Checking that the player has items in their inventory
-        item_to_drop=input().lower().replace(" ", "_")
+        item_to_drop=seperated[1]
         if item_to_drop in inventory_dict["inventory"] and item_to_drop!="placeholder": #Checks if the given item to drop is in the players inventory
             inventory_dict["inventory"].remove(item_to_drop) #Removes the earliest of that item in the list from the players inventory
             update_inventory(inventory_dict)
@@ -221,6 +231,8 @@ def drop_item(current_area):
         else:
             print("You do not have this item in your inventory")
             print()
+    else:
+        print("Your inventory is empty")
 
 def view_dropped_items(current_area):
     dropped_items_dict=read_dropped_items()
@@ -233,11 +245,10 @@ def view_dropped_items(current_area):
         print()
 
 def pickup_item(seperated,current_area):
-    print("Which item would you like to pick up?")
     view_dropped_items(current_area)
     dropped_items_dict=read_dropped_items()
     if dropped_items_dict["dropped_items"][current_area][0]!="placeholder": #Checking that the current room has any items dropped in it
-        item_to_pickup=input().lower().replace(" ", "_")
+        item_to_pickup=seperated[1]
         if item_to_pickup in dropped_items_dict["dropped_items"][current_area] and item_to_pickup!="placeholder": #Checking if the given item to pickup is dropped in the current area
             dropped_items_dict["dropped_items"][current_area].remove(item_to_pickup) #Removing the item from the items dropped in the area
             update_dropped_items(dropped_items_dict)
@@ -249,17 +260,34 @@ def pickup_item(seperated,current_area):
             print("Item is not dropped in this area")
             print()
 
+def help():
+    print("Go 'cardinal direction'")
+    print("This is how you move between areas")
+    print()
+    print("Drop Item")
+    print("Lists items in your inventory prompting you to input which item you want to drop")
+    print()
+    print("Pickup Item")
+    print("Lists items dropped in the area you can pickupp prompting you to input which item you want to pickup and add to your inventory")
+    print()
+    print("Help")
+    print("Displays how each command works")
+    print()
+    print("Quit")
+    print("Exits the game. You will prompted with the choice of whether to save your current progress or not.")
+    print()
+
 def action(seperated,game_map_dict,current_area,player_dict,exit):
     #Change this as this practically removes most of the purpose of validating the input
     if seperated[0]=="quit":
         exit=quit(current_area,player_dict)
-    elif seperated[0]=="view" and seperated[1]=="inventory":
-        view_inventory()
+    elif seperated[0]=="help":
+        help()
     elif seperated[0]=="go":
         current_area,exit=go_area(seperated,game_map_dict,current_area)
-    elif seperated[0]=="drop" and seperated[1]=="item":
-        drop_item(current_area)
-    elif seperated[0]=="pickup" and seperated[1]=="item":
+    elif seperated[0]=="drop":
+        drop_item(seperated,current_area)
+    elif seperated[0]=="pickup":
         pickup_item(seperated,current_area)
     else:
         print("Invalid command")
@@ -270,8 +298,6 @@ def area_decision(exit,choice,player_dict,current_area,verb_commands,noun_comman
     valid,seperated=parse_validate_input(verb_commands,noun_commands,choice,current_area,game_map_dict)
     if valid==True:
         exit,current_area=action(seperated,game_map_dict,current_area,player_dict,exit)
-        if seperated[0]=="quit":
-            return(exit,current_area)
     else:
         print("Invalid command try again")
         print()
@@ -281,7 +307,9 @@ def main():
     exit,verb_commands,noun_commands,current_area,area_directions,game_map_dict,player_dict=__init__()
     while exit!=True:
         area_directions=update_areas(current_area,area_directions,game_map_dict)
-        choice=player_options(current_area,game_map_dict,area_directions)
+        player_options(current_area,game_map_dict,area_directions)
+        choice=input().lower()
+        print()
         exit,current_area=area_decision(exit,choice,player_dict,current_area,verb_commands,noun_commands,game_map_dict)
 
 main()
