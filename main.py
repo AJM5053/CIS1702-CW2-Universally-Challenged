@@ -18,7 +18,6 @@ def test_variables(current_area,player_dict,area_directions):
 #At the start ask if they would like to load from the "saved_game" file or not. Maybe only update the saved game file or have a default equivalent duplicate for each json file but that would be nearly doubling the number of files.
 
 #Too much .replaces
-
 #If you use a key on a locked door it should become "accessible".
 #Some variable names share a name with a python instruction which is bad practice.
 #Over use of instructions like .lower or .replace and similar
@@ -177,7 +176,7 @@ def parse_validate_input(verb_commands,noun_commands,choice,current_area,game_ma
         else:
             return(False,seperated)
 
-def quit(current_area,player_dict): #Saves the area the player was in when they quit for the next time they play. This will be expanded upon to add more stuff saved and the ability to save to a seperate file
+def quit(seperated,current_area,player_dict,game_map_dict,exit): #Saves the area the player was in when they quit for the next time they play. This will be expanded upon to add more stuff saved and the ability to save to a seperate file
     exit=False
     while exit!=True:
         exit=True
@@ -195,7 +194,7 @@ def quit(current_area,player_dict): #Saves the area the player was in when they 
         else:
             print("Please input a valid answer")
             exit=False
-    return(exit)
+    return(current_area,exit)
 
 def view_inventory():
     inventory_dict=read_inventory()
@@ -207,7 +206,7 @@ def view_inventory():
             print(item.replace("_", " "))
         print()
 
-def go_area(seperated,game_map_dict,current_area):
+def go(seperated,current_area,player_dict,game_map_dict,exit):
     print(f"You have moved {seperated[1]} into area: {game_map_dict["game_map"]["area_connections"][current_area][seperated[1]].replace("_", " ")}")
     current_area=game_map_dict["game_map"]["area_connections"][current_area][seperated[1]]
     if current_area==game_map_dict["game_map"]["area_properties"]["end_area"]:
@@ -217,7 +216,7 @@ def go_area(seperated,game_map_dict,current_area):
         exit=False
     return(current_area,exit)
 
-def drop_item(seperated,current_area):
+def drop(seperated,current_area,player_dict,game_map_dict,exit):
     inventory_dict=read_inventory()
     if inventory_dict["inventory"][0]!="placeholder": #Checking that the player has items in their inventory
         item_to_drop=seperated[1]
@@ -233,6 +232,7 @@ def drop_item(seperated,current_area):
             print()
     else:
         print("Your inventory is empty")
+    return(current_area,exit)
 
 def view_dropped_items(current_area):
     dropped_items_dict=read_dropped_items()
@@ -244,7 +244,7 @@ def view_dropped_items(current_area):
             print(item.replace("_", " "))
         print()
 
-def pickup_item(seperated,current_area):
+def pickup(seperated,current_area,player_dict,game_map_dict,exit):
     view_dropped_items(current_area)
     dropped_items_dict=read_dropped_items()
     if dropped_items_dict["dropped_items"][current_area][0]!="placeholder": #Checking that the current room has any items dropped in it
@@ -259,8 +259,9 @@ def pickup_item(seperated,current_area):
         else:
             print("Item is not dropped in this area")
             print()
+    return(current_area,exit)
 
-def help():
+def help(seperated,current_area,player_dict,game_map_dict,exit):
     print("Go 'cardinal direction'")
     print("This is how you move between areas")
     print()
@@ -276,22 +277,12 @@ def help():
     print("Quit")
     print("Exits the game. You will prompted with the choice of whether to save your current progress or not.")
     print()
+    return(current_area,exit)
 
 def action(seperated,game_map_dict,current_area,player_dict,exit):
-    #Change this as this practically removes most of the purpose of validating the input
-    if seperated[0]=="quit":
-        exit=quit(current_area,player_dict)
-    elif seperated[0]=="help":
-        help()
-    elif seperated[0]=="go":
-        current_area,exit=go_area(seperated,game_map_dict,current_area)
-    elif seperated[0]=="drop":
-        drop_item(seperated,current_area)
-    elif seperated[0]=="pickup":
-        pickup_item(seperated,current_area)
-    else:
-        print("Invalid command")
-        print()
+    function_name=seperated[0] #String of function name
+    function=globals()[function_name] #Globals returns list of global variables including functions
+    current_area,exit=function(seperated,current_area,player_dict,game_map_dict,exit)
     return(exit,current_area)
 
 def area_decision(exit,choice,player_dict,current_area,verb_commands,noun_commands,game_map_dict):
