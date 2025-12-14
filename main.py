@@ -1,7 +1,7 @@
 import json
 
-#Programming 1 - CW2 - Group Project:
-#Universally Challenged
+# Programming 1 - CW2 Group Project:
+# Text-Based Adventure Game Engine
 
 def update_save_file(save_file_dict,save_file_num):
     file_name="save_file_"+save_file_num+".json"
@@ -47,7 +47,7 @@ def read_npcs():
     return(npcs_dict)
 
 def __init__():
-    #List of Valid commands
+    # This is a list of valid commands
     verb_commands=["go","drop","pickup","quit","help","view"]
     noun_commands=["north","east","south","west"]
     exit,save_file_num=start_menu()
@@ -71,7 +71,8 @@ def saved_choice(option):
     save_file_3_dict=read_save_file("3")
     print(f"3 - {save_file_3_dict["save_file"]["player"]["current_room"]}")
     save_file_num="0"
-    while ord(save_file_num)<49 or ord(save_file_num)>51: #Keeps asking the user for an input until it is valid. The Ord value gets the ascii value. 49 in ascii is "1" and 51 in ascii is "3".
+    while ord(save_file_num)<49 or ord(save_file_num)>51: 
+        # This keeps asking the user for an input until it is valid. The ord value gets the ascii value. 49 in ascii is "1" and 51 in ascii is "3"
         save_file_num=input()
         if save_file_num=="":
             print("Please enter valid option")
@@ -80,10 +81,9 @@ def saved_choice(option):
         overwrite_saved(save_file_num)
     return(save_file_num)
     
-
 def action(seperated,exit,save_file_num):
-    function_name=seperated[0] #String of function name
-    function=globals()[function_name] #Globals returns dictionary of global variables including functions
+    function_name=seperated[0] # String of function name
+    function=globals()[function_name] # Globals returns dictionary of global variables including functions
     exit=function(seperated,exit,save_file_num)
     return(exit)
 
@@ -96,13 +96,14 @@ def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
         print()
     return(exit)
 
-def start_menu(): #Sets what room the player first starts off in when opening the game
+def start_menu(): # Sets what room the player first starts off in when opening the game
     game_map_dict=read_game_map()
     print("1 - Start Game")
     print("2 - Load Game")
     print("3 - Quit")
     start_choice="0"
-    while ord(start_choice)<49 or ord(start_choice)>51: #Keeps asking the user for an input until it is valid. The Ord value gets the ascii value. 49 in ascii is "1" and 50 in ascii is "2".
+    while ord(start_choice)<49 or ord(start_choice)>51: 
+        # This keeps asking the user for an input until it is valid. The ord value gets the ascii value. 49 in ascii is "1" and 50 in ascii is "2"
         start_choice=input()
         if start_choice=="1":
             save_file_num=saved_choice("overwrite")
@@ -112,8 +113,8 @@ def start_menu(): #Sets what room the player first starts off in when opening th
         elif start_choice=="2":
             save_file_num=saved_choice("load")
         elif start_choice=="3":
-            print("Exitting...")
-            print("Exitted")
+            print("Exiting...")
+            print("Exited")
             return(True,"")
         else:
             start_choice="0"
