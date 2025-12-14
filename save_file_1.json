@@ -75,7 +75,7 @@
                     "mike_tyson"
                 ],
                 "room_inventory": [
-                    "kitkat",
+                    "kitkat"
                 ],
                 "accessible": false
             }
@@ -183,3 +183,4 @@
         }
     }
 }
+
