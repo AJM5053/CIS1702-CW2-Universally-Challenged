@@ -43,7 +43,7 @@
                 ],
                 "accessible":true 
             },
-            "Business_School":{
+            "business_school":{
                 "location_npcs":[
                     "jeff_bezos"
                 ],
@@ -184,3 +184,4 @@
     }
 
 }
+
