@@ -93,16 +93,16 @@ def saved_choice(option):
         overwrite_saved(save_file_num)
     return(save_file_num)
     
-def action(seperated,exit,save_file_num):
-    function_name=seperated[0] # String of function name
+def action(separated,exit,save_file_num):
+    function_name=separated[0] # String of function name
     function=globals()[function_name] # Globals returns dictionary of global variables including functions
-    exit=function(seperated,exit,save_file_num)
+    exit=function(separated,exit,save_file_num)
     return(exit)
 
 def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
-    valid,seperated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
+    valid,separated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
     if valid:
-        exit=action(seperated,exit,save_file_num)
+        exit=action(separated,exit,save_file_num)
     else:
         print("Invalid command try again")
         print()
@@ -142,3 +142,4 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
