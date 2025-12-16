@@ -92,6 +92,28 @@ def saved_choice(option):
     if option=="overwrite":
         overwrite_saved(save_file_num)
     return(save_file_num)
+
+# The command to let the player move in a direction to get to other rooms
+def go(separated,exit,save_file_num):
+    if len(separated)<2:
+        print("Pick a direction. You can go north, east, south, or west")
+        return(exit)
+    direction=separated[1]
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    game_map_dict=read_game_map()
+    connections=game_map_dict["game_map"]["room_connections"]
+    if direction not in connections[current_room]:
+        print("Invalid direction")
+        return(exit)
+    new_room=connections[current_room][direction]
+    if new_room=="wall":
+        print("You just walked into a wall")
+        return(exit)
+    save_file_dict["save_file"]["player"]["current_room"]=new_room
+    update_save_file(save_file_dict,save_file_num)
+    print("You moved"+direction)
+    return(exit)
     
 def action(separated,exit,save_file_num):
     function_name=separated[0] # String of function name
@@ -142,4 +164,5 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
