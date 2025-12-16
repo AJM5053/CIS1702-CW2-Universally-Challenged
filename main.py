@@ -9,6 +9,18 @@ def update_save_file(save_file_dict,save_file_num):
         json.dump(save_file_dict, write_file,indent=4)
     write_file.close()
 
+# The player current health in the chosen save file is reset to the max health
+def reset_player_health(save_file_num):
+    file_name="save_file_"+save_file_num+".json"
+    with open("player.json", "r") as f:
+        player_data = json.load(f)
+    max_health = player_data["player"]["max_health"]
+    with open(file_name, "r") as f:
+        save_data = json.load(f)
+    save_data["save_file"]["player"]["current_health"] = max_health
+    with open(file_name, "w") as f:
+        json.dump(save_data, f, indent=4)
+
 def read_save_file(save_file_num):
     file_name="save_file_"+save_file_num+".json"
     with open(file_name, mode="r") as read_file:   
