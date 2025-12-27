@@ -4,78 +4,94 @@
             "outside": {
                 "location_npcs": [
                     "caompus_cat",
-                    "alex"
+                    "alex",
+                    "placeholder"
                 ],
                 "room_inventory": [
                     "brick",
-                    "apple"
+                    "apple",
+                    "placeholder"
                 ],
                 "accessible": true
             },
             "the_hub": {
                 "location_npcs": [
-                    "subway_worker"
+                    "subway_worker",
+                    "placeholder"
                 ],
                 "room_inventory": [
                     "dagger",
-                    "business_school_key"
+                    "business_school_key",
+                    "placeholder"
                 ],
                 "accessible": true
             },
             "su_building": {
                 "location_npcs": [
                     "bar_worker",
-                    "angry_dave"
+                    "angry_dave",
+                    "placeholder"
                 ],
                 "room_inventory": [
-                    "pool_cue"
+                    "pool_cue",
+                    "placeholder"
                 ],
                 "accessible": true
             },
             "tech_hub": {
                 "location_npcs": [
                     "saad",
-                    "rouge_robot"
+                    "rouge_robot",
+                    "placeholder"
                 ],
                 "room_inventory": [
                     "catalyst_key",
-                    "kitkat"
+                    "kitkat",
+                    "placeholder"
                 ],
                 "accessible": true
             },
             "business_school": {
                 "location_npcs": [
-                    "jeff_bezos"
+                    "jeff_bezos",
+                    "placeholder"
                 ],
                 "room_inventory": [
-                    "ruler"
+                    "ruler",
+                    "placeholder"
                 ],
                 "accessible": false
             },
             "catalyst": {
                 "location_npcs": [
                     "adam",
-                    "tiger"
+                    "tiger",
+                    "placeholder"
                 ],
                 "room_inventory": [
                     "coca_cola",
-                    "tazer"
+                    "tazer",
+                    "placeholder"
                 ],
                 "accessible": true
             },
             "wall": {
                 "location_npcs": [
+                    "placeholder"
                 ],
                 "room_inventory": [
+                    "placeholder"
                 ],
                 "accessible": false
             },
             "sports_centre": {
                 "location_npcs": [
-                    "mike_tyson"
+                    "mike_tyson",
+                    "placeholder"
                 ],
                 "room_inventory": [
                     "kitkat",
+                    "placeholder"
                 ],
                 "accessible": false
             }
@@ -84,7 +100,8 @@
             "saad": {
                 "current_health": 150,
                 "inventory": [
-                    "keyboard"
+                    "keyboard",
+                    "placeholder"
                 ],
                 "coins": 20,
                 "agressive": false
@@ -92,7 +109,8 @@
             "adam": {
                 "current_health": 120,
                 "inventory": [
-                    "apple"
+                    "apple",
+                    "placeholder"
                 ],
                 "coins": 20,
                 "agressive": false
@@ -100,7 +118,8 @@
             "tiger": {
                 "current_health": 200,
                 "inventory": [
-                    "sports_centre_key"
+                    "sports_centre_key",
+                    "placeholder"
                 ],
                 "coins": 0,
                 "agressive": true
@@ -108,6 +127,7 @@
             "mike_tyson":{
                 "current_health":500,
                 "inventory":[
+                    "placeholder"
                 ],
                 "coins":100,
                 "agressive":true
@@ -115,7 +135,8 @@
             "jeff_bezos":{
                 "current_health":100,
                 "inventory":[
-                    "amazon_rocket_hammer"
+                    "amazon_rocket_hammer",
+                    "placeholder"
                 ],
                 "coins":200,
                 "agressive":false
@@ -123,7 +144,8 @@
             "rouge_robot":{
                 "current_health":220,
                 "inventory":[
-                    "sandwich"
+                    "sandwich",
+                    "placeholder"
                 ],
                 "coins":0,
                 "agressive":true
@@ -131,7 +153,8 @@
             "angry_dave":{
                 "current_health":100,
                 "inventory":[
-                    "beer"
+                    "beer",
+                    "placeholder"
                 ],
                 "coins":10,
                 "agressive":true
@@ -141,7 +164,8 @@
                 "inventory":[
                     "beer",
                     "beer",
-                    "kitkat"
+                    "kitkat",
+                    "placeholder"
                 ],
                 "coins":50,
                 "agressive":false
@@ -150,7 +174,8 @@
                 "current_health":100,
                 "inventory":[
                     "sandwich",
-                    "sandwich"
+                    "sandwich",
+                    "placeholder"
                 ],
                 "coins":25,
                 "agressive":false
@@ -158,7 +183,8 @@
             "alex":{
                 "current_health":80,
                 "inventory":[
-                    "badminton_racket"
+                    "badminton_racket",
+                    "placeholder"
                 ],
                 "coins":10,
                 "agressive":false
@@ -166,7 +192,8 @@
             "campus_cat":{
                 "current_health":20,
                 "inventory":[
-                    "apple"
+                    "apple",
+                    "placeholder"
                 ],
                 "coins":0,
                 "agressive":false
@@ -179,6 +206,7 @@
             "coins":20,
             "current_carry_weight":0,
             "inventory": [
+                "placeholder"
             ]
         }
     }
