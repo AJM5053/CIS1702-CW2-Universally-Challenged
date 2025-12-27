@@ -121,6 +121,11 @@ def action(separated,exit,save_file_num):
     exit=function(separated,exit,save_file_num)
     return(exit)
 
+# Reads the current save file and returns what weapon the player has equipped
+def equipped_weapon(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    return save_file_dict["save_file"]["player"]["equipped_weapon"]
+
 def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
     valid,separated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
     if valid:
@@ -164,5 +169,3 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
-
-
