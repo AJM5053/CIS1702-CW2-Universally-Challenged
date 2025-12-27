@@ -6,6 +6,7 @@
         "current_weight":0,
         "equipted_item":"fists",
         "inventory":[
+            "placeholder"
         ]
     }
 }
