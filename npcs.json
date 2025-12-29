@@ -6,7 +6,7 @@
             "markup":1.2,
             "dialogue":"Hi, how's your group project going?",
             "death_dialogue":"Ouch, bye",
-            "fight_dialogue":"This is rude",
+            "fight_dialogue":"This is rude"
         },
         "adam":{
             "max_health":120,
@@ -14,7 +14,7 @@
             "markup":1.1,
             "dialogue":"Hey, do you like sonic?",
             "death_dialogue":"Nah man...",
-            "fight_dialogue":"Buy me a beer if I win",
+            "fight_dialogue":"Buy me a beer if I win"
         },
         "tiger":{
             "max_health":200,
@@ -22,7 +22,7 @@
             "markup":1.0,
             "dialogue":"*tiger noises*",
             "death_dialogue":"*dying tiger noises*",
-            "fight_dialogue":"*angry tiger noises*",
+            "fight_dialogue":"*angry tiger noises*"
         },
         "mike_tyson":{
             "max_health":500,
@@ -30,7 +30,7 @@
             "markup":1.5,
             "dialogue":"I'M MIKE TYSON BITCH",
             "death_dialogue":"Not bad, champ",
-            "fight_dialogue":"You're gonna die fool",
+            "fight_dialogue":"You're gonna die fool"
         },
         "jeff_bezos":{
             "max_health":100,
@@ -38,7 +38,7 @@
             "markup":1.3,
             "dialogue":"Business is great!",
             "death_dialogue":"My lawyers will be in touch",
-            "fight_dialogue":"This isn't a smart decision",
+            "fight_dialogue":"This isn't a smart decision"
         },
         "rouge_robot":{
             "max_health":220,
@@ -46,7 +46,7 @@
             "markup":1.1,
             "dialogue":"ERROR! SYSTEM OUT OF CONTROL!",
             "death_dialogue":"System shutting down...",
-            "fight_dialogue":"COMMAND: KILL THE HUMAN!",
+            "fight_dialogue":"COMMAND: KILL THE HUMAN!"
         },
         "angry_dave":{
             "max_health":100,
@@ -54,7 +54,7 @@
             "markup":1.0,
             "dialogue":"Rghhh! I'm d-drunk",
             "death_dialogue":"Oh god, too much beer...",
-            "fight_dialogue":"UGHHH! GIVE ME MORE BEER!",
+            "fight_dialogue":"UGHHH! GIVE ME MORE BEER!"
         },
         "bar_worker":{
             "max_health":120,
@@ -62,7 +62,7 @@
             "markup":1.3,
             "dialogue":"Hey, fancy a drink?",
             "death_dialogue":"It's on the house then...",
-            "fight_dialogue":"Get out of my bar!",
+            "fight_dialogue":"Get out of my bar!"
         },
         "subway_worker":{
             "max_health":100,
@@ -70,7 +70,7 @@
             "markup":1.3,
             "dialogue":"Hello, welcome to subway",
             "death_dialogue":"I hate this job",
-            "fight_dialogue":"Oi, don't make me throw ham at you",
+            "fight_dialogue":"Oi, don't make me throw ham at you"
         },
         "alex":{
             "max_health":80,
@@ -78,7 +78,7 @@
             "markup":1.1,
             "dialogue":"Math jokes are great",
             "death_dialogue":"You win...",
-            "fight_dialogue":"I don't have time for this",
+            "fight_dialogue":"I don't have time for this"
         },
         "campus_cat":{
             "max_health":20,
@@ -86,7 +86,7 @@
             "markup":1.0,
             "dialogue":"Meow",
             "death_dialogue":"Meow...",
-            "fight_dialogue":"Hisssssssss",
-        },
+            "fight_dialogue":"Hisssssssss"
+        }
     }
 }
