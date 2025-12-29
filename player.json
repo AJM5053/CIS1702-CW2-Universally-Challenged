@@ -1,12 +1,6 @@
 {
     "player":{
         "max_health":100,
-        "carry_weight":100,
-        "current_health":100,
-        "current_weight":0,
-        "equipted_item":"fists",
-        "inventory":[
-            "placeholder"
-        ]
+        "carry_weight":100
     }
 }
