@@ -1,13 +1,25 @@
 import json
 
-#Programming 1 - CW2 - Group Project:
-#Universally Challenged
+# Programming 1 - CW2 Group Project:
+# Text-Based Adventure Game Engine
 
 def update_save_file(save_file_dict,save_file_num):
     file_name="save_file_"+save_file_num+".json"
     with open(file_name, "w") as write_file:
         json.dump(save_file_dict, write_file,indent=4)
     write_file.close()
+
+# The player current health in the chosen save file is reset to the max health
+def reset_player_health(save_file_num):
+    file_name="save_file_"+save_file_num+".json"
+    with open("player.json", "r") as f:
+        player_data = json.load(f)
+    max_health = player_data["player"]["max_health"]
+    with open(file_name, "r") as f:
+        save_data = json.load(f)
+    save_data["save_file"]["player"]["current_health"] = max_health
+    with open(file_name, "w") as f:
+        json.dump(save_data, f, indent=4)
 
 def read_save_file(save_file_num):
     file_name="save_file_"+save_file_num+".json"
@@ -47,7 +59,7 @@ def read_npcs():
     return(npcs_dict)
 
 def __init__():
-    #List of Valid commands
+    # This is a list of valid commands
     verb_commands=["go","drop","pickup","quit","help","view"]
     noun_commands=["north","east","south","west"]
     exit,save_file_num=start_menu()
@@ -71,7 +83,8 @@ def saved_choice(option):
     save_file_3_dict=read_save_file("3")
     print(f"3 - {save_file_3_dict["save_file"]["player"]["current_room"]}")
     save_file_num="0"
-    while ord(save_file_num)<49 or ord(save_file_num)>51: #Keeps asking the user for an input until it is valid. The Ord value gets the ascii value. 49 in ascii is "1" and 51 in ascii is "3".
+    while ord(save_file_num)<49 or ord(save_file_num)>51: 
+        # This keeps asking the user for an input until it is valid. The ord value gets the ascii value. 49 in ascii is "1" and 51 in ascii is "3"
         save_file_num=input()
         if save_file_num=="":
             print("Please enter valid option")
@@ -79,30 +92,57 @@ def saved_choice(option):
     if option=="overwrite":
         overwrite_saved(save_file_num)
     return(save_file_num)
-    
 
-def action(seperated,exit,save_file_num):
-    function_name=seperated[0] #String of function name
-    function=globals()[function_name] #Globals returns dictionary of global variables including functions
-    exit=function(seperated,exit,save_file_num)
+# The command to let the player move in a direction to get to other rooms
+def go(separated,exit,save_file_num):
+    if len(separated)<2:
+        print("Pick a direction. You can go north, east, south, or west")
+        return(exit)
+    direction=separated[1]
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    game_map_dict=read_game_map()
+    connections=game_map_dict["game_map"]["room_connections"]
+    if direction not in connections[current_room]:
+        print("Invalid direction")
+        return(exit)
+    new_room=connections[current_room][direction]
+    if new_room=="wall":
+        print("You just walked into a wall")
+        return(exit)
+    save_file_dict["save_file"]["player"]["current_room"]=new_room
+    update_save_file(save_file_dict,save_file_num)
+    print("You moved"+direction)
+    return(exit)
+    
+def action(separated,exit,save_file_num):
+    function_name=separated[0] # String of function name
+    function=globals()[function_name] # Globals returns dictionary of global variables including functions
+    exit=function(separated,exit,save_file_num)
     return(exit)
 
+# Reads the current save file and returns what weapon the player has equipped
+def equipped_weapon(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    return save_file_dict["save_file"]["player"]["equipped_weapon"]
+
 def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
-    valid,seperated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
+    valid,separated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
     if valid:
-        exit=action(seperated,exit,save_file_num)
+        exit=action(separated,exit,save_file_num)
     else:
         print("Invalid command try again")
         print()
     return(exit)
 
-def start_menu(): #Sets what room the player first starts off in when opening the game
+def start_menu(): # Sets what room the player first starts off in when opening the game
     game_map_dict=read_game_map()
     print("1 - Start Game")
     print("2 - Load Game")
     print("3 - Quit")
     start_choice="0"
-    while ord(start_choice)<49 or ord(start_choice)>51: #Keeps asking the user for an input until it is valid. The Ord value gets the ascii value. 49 in ascii is "1" and 50 in ascii is "2".
+    while ord(start_choice)<49 or ord(start_choice)>51: 
+        # This keeps asking the user for an input until it is valid. The ord value gets the ascii value. 49 in ascii is "1" and 50 in ascii is "2"
         start_choice=input()
         if start_choice=="1":
             save_file_num=saved_choice("overwrite")
@@ -112,8 +152,8 @@ def start_menu(): #Sets what room the player first starts off in when opening th
         elif start_choice=="2":
             save_file_num=saved_choice("load")
         elif start_choice=="3":
-            print("Exitting...")
-            print("Exitted")
+            print("Exiting...")
+            print("Exited")
             return(True,"")
         else:
             start_choice="0"
