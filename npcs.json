@@ -16,6 +16,14 @@
             "death_dialogue":"Nah man...",
             "fight_dialogue":"Buy me a beer if I win"
         },
+        "erin":{
+            "max_health":120,
+            "damage":15,
+            "markup":1.1,
+            "dialogue":"Hey :)",
+            "death_dialogue":"I lost? :(",
+            "fight_dialogue":"How dare you >:("
+        },
         "tiger":{
             "max_health":200,
             "damage":30,
@@ -90,3 +98,4 @@
         }
     }
 }
+
