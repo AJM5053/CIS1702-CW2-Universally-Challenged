@@ -117,8 +117,27 @@ def go(separated,exit,save_file_num):
     
 def action(separated,exit,save_file_num):
     function_name=separated[0] # String of function name
+    if function_name not in globals(): # Small guard to deal with invalid commands e.g. fly
+        print("That command doesn't exist")
+        return(exit)
     function=globals()[function_name] # Globals returns dictionary of global variables including functions
     exit=function(separated,exit,save_file_num)
+    return(exit)
+
+def pickup(seperated,exit,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    if save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]!=None: # Checks that the current room has items dropped in it
+        item_to_pickup=seperated[1]
+        if item_to_pickup in save_file_dict["save_file"]["game_map"][current_room]["room_inventory"] and item_to_pickup!="": #Checks if the given item to pickup is dropped in the current room
+            if add_item(item_to_pickup,save_file_num):
+                save_file_dict=read_save_file(save_file_num)
+                save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].remove(item_to_pickup) # Removes the item from the items dropped in the room
+                update_save_file(save_file_dict,save_file_num)
+                print(f"{item_to_pickup.replace("_", " ")} picked up and added to inventory...")
+        else:
+            print("Item is not dropped in this room")
+            print()
     return(exit)
 
 # Reads the current save file and returns what weapon the player has equipped
@@ -133,6 +152,24 @@ def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
     else:
         print("Invalid command try again")
         print()
+    return(exit)
+
+def drop(seperated,exit,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    if save_file_dict["save_file"]["player"]["inventory"]!=None: # Checks the player has items in their inventory
+        item_to_drop=seperated[1]
+        if item_to_drop in save_file_dict["save_file"]["player"]["inventory"] and item_to_drop!="": # Checks if the given item to drop is in the players inventory
+            remove_item(item_to_drop,save_file_num) # Removes the earliest of that item in the list from the players inventory
+            save_file_dict=read_save_file(save_file_num)
+            current_room=save_file_dict["save_file"]["player"]["current_room"]
+            save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].insert(0,item_to_drop) # Add the dropped item to the dropped items file for the current room
+            update_save_file(save_file_dict,save_file_num)
+            print(f"{item_to_drop.replace("_", " ").capitalize()} dropped in room: {current_room.replace("_", " ")}...")
+        else:
+            print("You do not have this item in your inventory")
+            print()
+    else:
+        print("Your inventory is empty")
     return(exit)
 
 def start_menu(): # Sets what room the player first starts off in when opening the game
