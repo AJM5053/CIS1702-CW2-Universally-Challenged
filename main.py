@@ -195,6 +195,21 @@ def go(parsed,exit,save_file_num):
         print("The correct command is 'go direction'")
     return(exit)
 
+def is_empty(choice):
+    if choice=="":
+        return(True)
+    else:
+        return(False)
+
+def npc_name(parsed,save_file_dict,current_room):
+    parsed_combined=["npc_interact"]
+    for item in parsed:
+        parsed_combined.append(item)
+    parsed_combined[1]=name_combination(parsed_combined)
+    if parsed_combined[1].replace(" ","_") in save_file_dict["save_file"]["game_map"][current_room]["location_npcs"]:
+        return(True,["npc_interact",parsed_combined[1]])
+    return(False,parsed)
+
 def validate_input(verb_commands,choice,save_file_num):
     if is_empty(choice):#If the inputs inputs nothing
         return(False,"")
@@ -336,6 +351,7 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
 
 
