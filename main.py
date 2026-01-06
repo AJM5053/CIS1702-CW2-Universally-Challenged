@@ -21,6 +21,8 @@ def reset_player_health(save_file_num):
     with open(file_name, "w") as f:
         json.dump(save_data, f, indent=4)
 
+
+
 def read_save_file(save_file_num):
     file_name="save_file_"+save_file_num+".json"
     with open(file_name, mode="r") as read_file:   
@@ -222,6 +224,7 @@ def drop(seperated,exit,save_file_num):
         print("Your inventory is empty")
     return(exit)
 
+
 def start_menu(): # Sets what room the player first starts off in when opening the game
     game_map_dict=read_game_map()
     print("1 - Start Game")
@@ -260,4 +263,78 @@ main()
 
 
 
+def player_options(save_file_num): #This displays to the player what their options are and asks for an input
+    #Player options
+    game_map_dict=read_game_map()
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    print()
+    print("#---OPTIONS---#")
+    print(f"Current room: {current_room.replace("_", " ")}")
+    print(game_map_dict["game_map"]["room_descriptions"][current_room])
+    print()
+    print("What would you like to do?")
+    print()
+    print("Go...") #This command is for the user to choose a direction via the logic term go
+    print(f"North - {game_map_dict["game_map"]["room_connections"][current_room]["north"].replace("_", " ")}")
+    print(f"East - {game_map_dict["game_map"]["room_connections"][current_room]["east"].replace("_", " ")}")
+    print(f"South - {game_map_dict["game_map"]["room_connections"][current_room]["south"].replace("_", " ")}")
+    print(f"West - {game_map_dict["game_map"]["room_connections"][current_room]["west"].replace("_", " ")}")
+    print()
+    print("Drop...") #This command is designed for the user to drop the item
+    temp=view_inventory(save_file_num)
+    print("Pickup...") #This command is designed for the user to pickup th'e iteme
+    view_dropped_items(save_file_num)
+    print()
+    print("Interact With:")
+    view_npcs(save_file_num)
+    print()
+    print("View Stats")
+    print("Help")
+    print("Quit")
 
+
+def weight_check(item,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    items_dict=read_items()
+    player_dict=read_player()
+    if save_file_dict["save_file"]["player"]["current_carry_weight"]>=player_dict["player"]["carry_weight"]:
+        print("Inventory Full")
+        return(False)
+    elif (save_file_dict["save_file"]["player"]["current_carry_weight"]+items_dict["items"][item]["weight"])>player_dict["player"]["carry_weight"]:
+        print("You do not have the inventory space for this item")
+        return(False)
+    else:
+        return(True)
+
+
+
+def view_inventory(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    if save_file_dict["save_file"]["player"]["inventory"]==[]:
+        print("You inventory is empty")
+        print()
+        return(False)
+    else:
+        for item in save_file_dict["save_file"]["player"]["inventory"]:
+            print(item.replace("_"," ").capitalize())
+        print()
+        return(True)
+
+
+def view_dropped_items(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    if save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]==[]:
+        print("This room has not dropped items...")
+        print()
+    else:
+        for item in save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]:
+            print(item.replace("_", " ").capitalize())
+        print()
+
+
+def item_stats(item,save_file_num):
+    items_dict=read_items()
+    for key,value in items_dict["items"][item].items():
+        print(f"{key.replace("_"," ").capitalize()} - {value}")
