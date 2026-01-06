@@ -21,6 +21,8 @@ def reset_player_health(save_file_num):
     with open(file_name, "w") as f:
         json.dump(save_data, f, indent=4)
 
+
+
 def read_save_file(save_file_num):
     file_name="save_file_"+save_file_num+".json"
     with open(file_name, mode="r") as read_file:   
@@ -222,6 +224,7 @@ def drop(seperated,exit,save_file_num):
         print("Your inventory is empty")
     return(exit)
 
+
 def start_menu(): # Sets what room the player first starts off in when opening the game
     game_map_dict=read_game_map()
     print("1 - Start Game")
@@ -258,6 +261,37 @@ def main():
 main()
 
 
+
+
+def player_options(save_file_num): #This displays to the player what their options are and asks for an input
+    #Player options
+    game_map_dict=read_game_map()
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    print()
+    print("#---OPTIONS---#")
+    print(f"Current room: {current_room.replace("_", " ")}")
+    print(game_map_dict["game_map"]["room_descriptions"][current_room])
+    print()
+    print("What would you like to do?")
+    print()
+    print("Go...") #This command is for the user to choose a direction via the logic term go
+    print(f"North - {game_map_dict["game_map"]["room_connections"][current_room]["north"].replace("_", " ")}")
+    print(f"East - {game_map_dict["game_map"]["room_connections"][current_room]["east"].replace("_", " ")}")
+    print(f"South - {game_map_dict["game_map"]["room_connections"][current_room]["south"].replace("_", " ")}")
+    print(f"West - {game_map_dict["game_map"]["room_connections"][current_room]["west"].replace("_", " ")}")
+    print()
+    print("Drop...") #This command is designed for the user to drop the item
+    temp=view_inventory(save_file_num)
+    print("Pickup...") #This command is designed for the user to pickup th'e iteme
+    view_dropped_items(save_file_num)
+    print()
+    print("Interact With:")
+    view_npcs(save_file_num)
+    print()
+    print("View Stats")
+    print("Help")
+    print("Quit")
 
 
 
