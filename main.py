@@ -154,7 +154,7 @@ def quit(parsed,exit,save_file_num):
 def item_stats(item,save_file_num):
     items_dict=read_items()
     for key,value in items_dict["items"][item].items():
-        print(f"{key.replace("_"," ").capitalize()} - {value}")
+        print(f"{key.replace('_',' ').capitalize()} - {value}")
 
 def remove_item(item,save_file_num):
     save_file_dict=read_save_file(save_file_num)
@@ -251,7 +251,7 @@ def validate_input(verb_commands,choice,save_file_num):
     else:
         return(False,parsed)
 
-def parse_validate_input(exit,choice,save_file_num): #Checks if a function with that name exists.
+def parse_validate_input(choice,exit,save_file_num): #Checks if a function with that name exists.
     if is_empty(choice):#If the inputs inputs nothing
         return(False,"")
     verb_commands=["go","drop","pickup","view","quit","help","attack","block","change","talk","trade","buy","sell","npc_interact"]
@@ -297,8 +297,8 @@ def equipped_weapon(save_file_num):
     save_file_dict=read_save_file(save_file_num)
     return save_file_dict["save_file"]["player"]["equipped_weapon"]
 
-def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
-    valid,separated=parse_validate_input(verb_commands,noun_commands,choice,exit,save_file_num)
+def room_decision(exit,choice,save_file_num):
+    valid,separated=parse_validate_input(choice,exit,save_file_num)
     if valid:
         exit=action(separated,exit,save_file_num)
     else:
@@ -390,9 +390,10 @@ def main():
         player_options(save_file_num)
         choice=input().lower()
         print()
-        exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
+        exit=room_decision(exit,choice,save_file_num)
 
 main()
+
 
 
 
