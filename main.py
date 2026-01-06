@@ -251,17 +251,19 @@ def validate_input(verb_commands,choice,save_file_num):
     else:
         return(False,parsed)
 
-def parse_validate_input(verb_commands,noun_commands,choice,exit,save_file_num):
-    parsed_data = choice.split(' ')
-
-    verb = parsed_data[0].lower() ### defines the first half of the user input as the verb
-    noun = parsed_data[1].lower() if len(parsed_data) > 1 else None ### defines the second half of the user input as the noun
-
-    for each_verb in verb_commands:
-        if verb == each_verb:
-            action(parsed_data,exit,save_file_num) ### sent to action function to execute command
-    print("Please enter valid option")
-    return(exit)
+def parse_validate_input(exit,choice,save_file_num): #Checks if a function with that name exists.
+    if is_empty(choice):#If the inputs inputs nothing
+        return(False,"")
+    verb_commands=["go","drop","pickup","view","quit","help","attack","block","change","talk","trade","buy","sell","npc_interact"]
+    parsed=choice.split()
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    npc_result,parsed=npc_name(parsed,save_file_dict,current_room)
+    if npc_result:
+        return(True,parsed)
+    if parsed[0] in verb_commands:
+        return(True,parsed)
+    return(False,parsed)
 
 def action(separated,exit,save_file_num):
     function_name=separated[0] # String of function name
@@ -391,6 +393,7 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
 
 
