@@ -77,11 +77,11 @@ def overwrite_saved(save_file_num):
 def saved_choice(option):
     print(f"Select saved game to {option}")
     save_file_1_dict=read_save_file("1")
-    print(f"1 - {save_file_1_dict["save_file"]["player"]["current_room"]}")
+    print(f"1 - {save_file_1_dict['save_file']['player']['current_room']}")
     save_file_2_dict=read_save_file("2")
-    print(f"2 - {save_file_2_dict["save_file"]["player"]["current_room"]}")
+    print(f"2 - {save_file_2_dict['save_file']['player']['current_room']}")
     save_file_3_dict=read_save_file("3")
-    print(f"3 - {save_file_3_dict["save_file"]["player"]["current_room"]}")
+    print(f"3 - {save_file_3_dict['save_file']['player']['current_room']}")
     save_file_num="0"
     while ord(save_file_num)<49 or ord(save_file_num)>51: 
         # This keeps asking the user for an input until it is valid. The ord value gets the ascii value. 49 in ascii is "1" and 51 in ascii is "3"
@@ -134,7 +134,7 @@ def pickup(seperated,exit,save_file_num):
                 save_file_dict=read_save_file(save_file_num)
                 save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].remove(item_to_pickup) # Removes the item from the items dropped in the room
                 update_save_file(save_file_dict,save_file_num)
-                print(f"{item_to_pickup.replace("_", " ")} picked up and added to inventory...")
+                print(f"{item_to_pickup.replace('_', ' ')} picked up and added to inventory...")
         else:
             print("Item is not dropped in this room")
             print()
@@ -164,7 +164,7 @@ def drop(seperated,exit,save_file_num):
             current_room=save_file_dict["save_file"]["player"]["current_room"]
             save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].insert(0,item_to_drop) # Add the dropped item to the dropped items file for the current room
             update_save_file(save_file_dict,save_file_num)
-            print(f"{item_to_drop.replace("_", " ").capitalize()} dropped in room: {current_room.replace("_", " ")}...")
+            print(f"{item_to_drop.replace('_', ' ').capitalize()} dropped in room: {current_room.replace('_', ' ')}...")
         else:
             print("You do not have this item in your inventory")
             print()
@@ -206,3 +206,4 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
