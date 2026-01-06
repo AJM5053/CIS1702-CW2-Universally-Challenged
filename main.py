@@ -308,3 +308,15 @@ def weight_check(item,save_file_num):
         return(True)
 
 
+
+def view_inventory(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    if save_file_dict["save_file"]["player"]["inventory"]==[]:
+        print("You inventory is empty")
+        print()
+        return(False)
+    else:
+        for item in save_file_dict["save_file"]["player"]["inventory"]:
+            print(item.replace("_"," ").capitalize())
+        print()
+        return(True)
