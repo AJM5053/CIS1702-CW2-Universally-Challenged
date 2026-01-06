@@ -58,6 +58,15 @@ def read_npcs():
     read_file.close
     return(npcs_dict)
 
+def view_npcs(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    if save_file_dict["save_file"]["game_map"][current_room]["location_npcs"]==[]:
+        print("There are no NPCs in this room")
+    else:
+        for npc in save_file_dict["save_file"]["game_map"][current_room]["location_npcs"]:
+            print(npc.capitalize().replace("_"," "))
+
 def __init__():
     # This is a list of valid commands
     verb_commands=["go","drop","pickup","quit","help","view"]
@@ -235,6 +244,7 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
 
 
