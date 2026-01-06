@@ -294,4 +294,17 @@ def player_options(save_file_num): #This displays to the player what their optio
     print("Quit")
 
 
+def weight_check(item,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    items_dict=read_items()
+    player_dict=read_player()
+    if save_file_dict["save_file"]["player"]["current_carry_weight"]>=player_dict["player"]["carry_weight"]:
+        print("Inventory Full")
+        return(False)
+    elif (save_file_dict["save_file"]["player"]["current_carry_weight"]+items_dict["items"][item]["weight"])>player_dict["player"]["carry_weight"]:
+        print("You do not have the inventory space for this item")
+        return(False)
+    else:
+        return(True)
+
 
