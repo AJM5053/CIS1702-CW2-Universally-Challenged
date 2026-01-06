@@ -332,3 +332,9 @@ def view_dropped_items(save_file_num):
         for item in save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]:
             print(item.replace("_", " ").capitalize())
         print()
+
+
+def item_stats(item,save_file_num):
+    items_dict=read_items()
+    for key,value in items_dict["items"][item].items():
+        print(f"{key.replace("_"," ").capitalize()} - {value}")
