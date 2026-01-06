@@ -320,3 +320,15 @@ def view_inventory(save_file_num):
             print(item.replace("_"," ").capitalize())
         print()
         return(True)
+
+
+def view_dropped_items(save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    if save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]==[]:
+        print("This room has not dropped items...")
+        print()
+    else:
+        for item in save_file_dict["save_file"]["game_map"][current_room]["room_inventory"]:
+            print(item.replace("_", " ").capitalize())
+        print()
