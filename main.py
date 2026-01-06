@@ -141,6 +141,18 @@ def go(separated,exit,save_file_num):
     print("You moved"+direction)
     return(exit)
 
+def validate_input(verb_commands,choice,save_file_num):
+    if is_empty(choice):#If the inputs inputs nothing
+        return(False,"")
+    parsed=choice.split()
+    save_file_dict=read_save_file(save_file_num)
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    npc_result,parsed=npc_name(parsed,save_file_dict,current_room)
+    if npc_result:
+        return(True,parsed)
+    else:
+        return(False,parsed)
+
 def parse_validate_input(verb_commands,noun_commands,choice,exit,save_file_num):
     parsed_data = choice.split(' ')
 
@@ -244,6 +256,7 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
 
 
