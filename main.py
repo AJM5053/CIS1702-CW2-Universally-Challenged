@@ -170,25 +170,29 @@ def view_inventory(save_file_num):
         return(True)
 
 # The command to let the player move in a direction to get to other rooms
-def go(separated,exit,save_file_num):
-    if len(separated)<2:
-        print("Pick a direction. You can go north, east, south, or west")
-        return(exit)
-    direction=separated[1]
-    save_file_dict=read_save_file(save_file_num)
-    current_room=save_file_dict["save_file"]["player"]["current_room"]
-    game_map_dict=read_game_map()
-    connections=game_map_dict["game_map"]["room_connections"]
-    if direction not in connections[current_room]:
-        print("Invalid direction")
-        return(exit)
-    new_room=connections[current_room][direction]
-    if new_room=="wall":
-        print("You just walked into a wall")
-        return(exit)
-    save_file_dict["save_file"]["player"]["current_room"]=new_room
-    update_save_file(save_file_dict,save_file_num)
-    print("You moved"+direction)
+def go(parsed,exit,save_file_num):
+    if len(parsed)==2:
+        directions=["north","east","south","west"]
+        if parsed[1] in directions:
+            save_file_dict=read_save_file(save_file_num)
+            current_room=save_file_dict["save_file"]["player"]["current_room"]
+            if is_valid_movement(save_file_num,parsed[1],current_room):
+                game_map_dict=read_game_map()
+                print(f"You have moved {parsed[1]} into room: {game_map_dict["game_map"]["room_connections"][current_room][parsed[1]].replace("_", " ")}")
+                prev_room=current_room
+                current_room=game_map_dict["game_map"]["room_connections"][current_room][parsed[1]]
+                if current_room==game_map_dict["game_map"]["room_properties"]["end_room"]:
+                    game_won()
+                    exit=True
+                else:
+                    exit=False
+                    save_file_dict["save_file"]["player"]["current_room"]=current_room
+                    update_save_file(save_file_dict,save_file_num)
+                    aggressive_check(save_file_num,current_room,prev_room)
+        else:
+            print("Not a direction")
+    else:
+        print("The correct command is 'go direction'")
     return(exit)
 
 def validate_input(verb_commands,choice,save_file_num):
@@ -330,4 +334,5 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
