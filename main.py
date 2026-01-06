@@ -68,15 +68,12 @@ def view_npcs(save_file_num):
             print(npc.capitalize().replace("_"," "))
 
 def __init__():
-    # This is a list of valid commands
-    verb_commands=["go","drop","pickup","quit","help","view"]
-    noun_commands=["north","east","south","west"]
     exit,save_file_num=start_menu()
     save_file_dict=read_save_file(save_file_num)
     game_map_dict=read_game_map()
     current_room=save_file_dict["save_file"]["player"]["current_room"]
     reset_player_health(save_file_num)
-    return(verb_commands,noun_commands,exit,save_file_num)
+    return(exit,save_file_num)
 
 def overwrite_saved(save_file_num):
     default_save_file_dict=read_default_save_file()
@@ -130,6 +127,13 @@ def saved_choice(option):
     if option=="overwrite":
         overwrite_saved(save_file_num)
     return(save_file_num)
+
+# Saves the room the player was in when they quit for the next time they play
+def quit(parsed,exit,save_file_num):
+    exit=True
+    print("Exiting...")
+    print("Exited")
+    return(exit)
 
 def item_stats(item,save_file_num):
     items_dict=read_items()
@@ -326,3 +330,4 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
