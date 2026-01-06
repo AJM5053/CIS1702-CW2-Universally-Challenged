@@ -178,7 +178,7 @@ def go(parsed,exit,save_file_num):
             current_room=save_file_dict["save_file"]["player"]["current_room"]
             if is_valid_movement(save_file_num,parsed[1],current_room):
                 game_map_dict=read_game_map()
-                print(f"You have moved {parsed[1]} into room: {game_map_dict["game_map"]["room_connections"][current_room][parsed[1]].replace("_", " ")}")
+                print(f"You have moved {parsed[1]} into room: {game_map_dict['game_map']['room_connections'][current_room][parsed[1]].replace('_', ' ')}")
                 prev_room=current_room
                 current_room=game_map_dict["game_map"]["room_connections"][current_room][parsed[1]]
                 if current_room==game_map_dict["game_map"]["room_properties"]["end_room"]:
@@ -188,12 +188,26 @@ def go(parsed,exit,save_file_num):
                     exit=False
                     save_file_dict["save_file"]["player"]["current_room"]=current_room
                     update_save_file(save_file_dict,save_file_num)
-                    aggressive_check(save_file_num,current_room,prev_room)
         else:
             print("Not a direction")
     else:
         print("The correct command is 'go direction'")
     return(exit)
+
+def is_empty(choice):
+    if choice=="":
+        return(True)
+    else:
+        return(False)
+
+def npc_name(parsed,save_file_dict,current_room):
+    parsed_combined=["npc_interact"]
+    for item in parsed:
+        parsed_combined.append(item)
+    parsed_combined[1]=name_combination(parsed_combined)
+    if parsed_combined[1].replace(" ","_") in save_file_dict["save_file"]["game_map"][current_room]["location_npcs"]:
+        return(True,["npc_interact",parsed_combined[1]])
+    return(False,parsed)
 
 def validate_input(verb_commands,choice,save_file_num):
     if is_empty(choice):#If the inputs inputs nothing
@@ -238,7 +252,7 @@ def pickup(parsed,exit,save_file_num):
                 save_file_dict=read_save_file(save_file_num)
                 save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].remove(item_to_pickup) #Removing the item from the items dropped in the room
                 update_save_file(save_file_dict,save_file_num)
-                print(f"{item_to_pickup.replace("_", " ")} picked up and added to inventory...")
+                print(f"{item_to_pickup.replace('_', ' ')} picked up and added to inventory...")
         else:
             print("Item is not dropped in this room")
             print()
@@ -270,7 +284,7 @@ def drop(parsed,exit,save_file_num):
             current_room=save_file_dict["save_file"]["player"]["current_room"]
             save_file_dict["save_file"]["game_map"][current_room]["room_inventory"].insert(0,item_to_drop) #Add the dropped item to the dropped items file for the current room the player is in
             update_save_file(save_file_dict,save_file_num)
-            print(f"{item_to_drop.replace("_", " ").capitalize()} dropped in room: {current_room.replace("_", " ")}...")
+            print(f"{item_to_drop.replace('_', ' ').capitalize()} dropped in room: {current_room.replace('_', ' ')}...")
         else:
             print("You do not have this item in your inventory")
             print()
@@ -336,6 +350,8 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
+
 
 
 
