@@ -75,6 +75,22 @@ def __init__():
     reset_player_health(save_file_num)
     return(exit,save_file_num)
 
+def check_key(direction,save_file_num): # Checks if player has the correct key
+    save_file_dict=read_save_file(save_file_num)
+    game_map_dict=read_game_map()
+    current_room=save_file_dict["save_file"]["player"]["current_room"]
+    key=game_map_dict["game_map"]["room_connections"][current_room][direction]+"_"+"key"
+    if key in save_file_dict["save_file"]["player"]["inventory"]:
+        return(True)
+    else:
+        return(False)
+
+def is_accessible(direction,current_room,save_file_dict,game_map_dict):
+    if save_file_dict["save_file"]["game_map"][game_map_dict["game_map"]["room_connections"][current_room][direction]]["accessible"]==False:#Checks whether the room chosen to move to is accessible
+        return(False)
+    else:
+        return(True)
+
 def overwrite_saved(save_file_num):
     default_save_file_dict=read_default_save_file()
     default_save_file_dict["save_file"]=default_save_file_dict.pop("default_save_file")
@@ -168,6 +184,20 @@ def view_inventory(save_file_num):
             print(item.replace("_"," ").capitalize())
         print()
         return(True)
+
+def is_valid_movement(save_file_num,direction,current_room):
+    game_map_dict=read_game_map()
+    save_file_dict=read_save_file(save_file_num)
+    if not is_accessible(direction,current_room,save_file_dict,game_map_dict):
+        if check_key(direction,save_file_num):
+            print("You use your key to open the door")
+            save_file_dict["save_file"]["game_map"][current_room].update({"accessible":True})
+            update_save_file(save_file_dict,save_file_num)
+            print("Door Unlocked...")
+        else:
+            print("Locked/Inaccessible")
+            return(False)
+    return(True)
 
 # The command to let the player move in a direction to get to other rooms
 def go(parsed,exit,save_file_num):
@@ -305,6 +335,12 @@ def weight_check(item,save_file_num):
     else:
         return(True)
 
+def name_combination(parsed):
+    combined_item=parsed[1]
+    for i in range(2,len(parsed)):
+        combined_item+="_"+parsed[i]
+    return(combined_item)
+
 def view_dropped_items(save_file_num):
     save_file_dict=read_save_file(save_file_num)
     current_room=save_file_dict["save_file"]["player"]["current_room"]
@@ -341,6 +377,11 @@ def start_menu(): # Sets what room the player first starts off in when opening t
             print("Please enter valid option")
     return(False,save_file_num)
 
+def game_won():
+    game_map_dict=read_game_map()
+    print(game_map_dict["game_map"]["room_descriptions"][game_map_dict["game_map"]["room_properties"]["end_room"]])
+    print(game_map_dict["game_map"]["story"]["end_text"])
+
 def main():
     verb_commands,noun_commands,exit,save_file_num=__init__()
     while exit!=True:
@@ -350,8 +391,4 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
-
-
-
-
 
