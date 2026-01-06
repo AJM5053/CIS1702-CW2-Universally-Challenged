@@ -114,7 +114,19 @@ def go(separated,exit,save_file_num):
     update_save_file(save_file_dict,save_file_num)
     print("You moved"+direction)
     return(exit)
-    
+
+def parse_validate_input(verb_commands,noun_commands,choice,exit,save_file_num):
+    parsed_data = choice.split(' ')
+
+    verb = parsed_data[0].lower() ### defines the first half of the user input as the verb
+    noun = parsed_data[1].lower() if len(parsed_data) > 1 else None ### defines the second half of the user input as the noun
+
+    for each_verb in verb_commands:
+        if verb == each_verb:
+            action(parsed_data,exit,save_file_num) ### sent to action function to execute command
+    print("Please enter valid option")
+    return(exit)
+
 def action(separated,exit,save_file_num):
     function_name=separated[0] # String of function name
     if function_name not in globals(): # Small guard to deal with invalid commands e.g. fly
@@ -146,7 +158,7 @@ def equipped_weapon(save_file_num):
     return save_file_dict["save_file"]["player"]["equipped_weapon"]
 
 def room_decision(exit,choice,verb_commands,noun_commands,save_file_num):
-    valid,separated=parse_validate_input(verb_commands,noun_commands,choice,save_file_num)
+    valid,separated=parse_validate_input(verb_commands,noun_commands,choice,exit,save_file_num)
     if valid:
         exit=action(separated,exit,save_file_num)
     else:
@@ -206,4 +218,5 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
