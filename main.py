@@ -93,6 +93,23 @@ def saved_choice(option):
         overwrite_saved(save_file_num)
     return(save_file_num)
 
+def remove_item(item,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    items_dict=read_items()
+    save_file_dict["save_file"]["player"]["current_carry_weight"]-=items_dict["items"][item]["weight"]
+    save_file_dict["save_file"]["player"]["inventory"].remove(item)
+    update_save_file(save_file_dict,save_file_num)
+
+def add_item(item,save_file_num):
+    save_file_dict=read_save_file(save_file_num)
+    items_dict=read_items()
+    if weight_check(item,save_file_num):
+        save_file_dict["save_file"]["player"]["current_carry_weight"]+=items_dict["items"][item]["weight"]
+        save_file_dict["save_file"]["player"]["inventory"].insert(0,item)
+        update_save_file(save_file_dict,save_file_num)
+        return(True)
+    return(False)
+
 # The command to let the player move in a direction to get to other rooms
 def go(separated,exit,save_file_num):
     if len(separated)<2:
@@ -218,5 +235,6 @@ def main():
         exit=room_decision(exit,choice,verb_commands,noun_commands,save_file_num)
 
 main()
+
 
 
